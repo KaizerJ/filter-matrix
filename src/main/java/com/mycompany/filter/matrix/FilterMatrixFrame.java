@@ -5,6 +5,8 @@
  */
 package com.mycompany.filter.matrix;
 
+import java.awt.Color;
+
 /**
  *
  * @author Jonay
@@ -19,6 +21,7 @@ public class FilterMatrixFrame extends javax.swing.JFrame {
     public FilterMatrixFrame() {
         initComponents();
         initThresholdSlider();
+        this.thresholdTextField.setText(this.thresholdSlider.getValue() + "");
         initMatrix();
         showMatrix();
     }
@@ -41,8 +44,13 @@ public class FilterMatrixFrame extends javax.swing.JFrame {
         maxLabel = new javax.swing.JLabel();
         maxTextField = new javax.swing.JTextField();
         thresholdSlider = new javax.swing.JSlider();
+        jLabel1 = new javax.swing.JLabel();
+        thresholdTextField = new javax.swing.JTextField();
+        jonayLabel = new javax.swing.JLabel();
+        samuelLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Filtrar matriz");
         setResizable(false);
 
         matrixTextArea.setEditable(false);
@@ -57,7 +65,7 @@ public class FilterMatrixFrame extends javax.swing.JFrame {
             matrixPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, matrixPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
         );
         matrixPanelLayout.setVerticalGroup(
@@ -81,14 +89,23 @@ public class FilterMatrixFrame extends javax.swing.JFrame {
         maxLabel.setText("Máximo");
 
         maxTextField.setText("100");
+        maxTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                maxTextFieldKeyReleased(evt);
+            }
+        });
 
-        thresholdSlider.setMajorTickSpacing(20);
-        thresholdSlider.setMinorTickSpacing(20);
+        thresholdSlider.setToolTipText("Mueva la barra deslizante para actualizar");
         thresholdSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 thresholdSliderStateChanged(evt);
             }
         });
+
+        jLabel1.setText("Umbral:");
+
+        thresholdTextField.setEditable(false);
+        thresholdTextField.setToolTipText("Desliza la barra para cambiar el umbral");
 
         javax.swing.GroupLayout confPanelLayout = new javax.swing.GroupLayout(confPanel);
         confPanel.setLayout(confPanelLayout);
@@ -106,27 +123,35 @@ public class FilterMatrixFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(maxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(thresholdSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(confPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(thresholdSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(confPanelLayout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(thresholdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         confPanelLayout.setVerticalGroup(
             confPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(confPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(confPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(minLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(maxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(thresholdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
                 .addGroup(confPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, confPanelLayout.createSequentialGroup()
-                        .addGroup(confPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(minLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(maxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(7, 7, 7)
-                        .addGroup(confPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(minTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(maxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, confPanelLayout.createSequentialGroup()
-                        .addComponent(thresholdSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27))))
+                    .addGroup(confPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(minTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(maxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(thresholdSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 16, Short.MAX_VALUE))
         );
+
+        jonayLabel.setText("Jonay Suárez Ramírez");
+
+        samuelLabel.setText("Samuel Trujillo Santana");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -138,6 +163,12 @@ public class FilterMatrixFrame extends javax.swing.JFrame {
                     .addComponent(confPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(matrixPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jonayLabel)
+                .addGap(39, 39, 39)
+                .addComponent(samuelLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -146,21 +177,66 @@ public class FilterMatrixFrame extends javax.swing.JFrame {
                 .addComponent(matrixPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(confPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jonayLabel)
+                    .addComponent(samuelLabel))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void thresholdSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_thresholdSliderStateChanged
+        this.thresholdTextField.setText(this.thresholdSlider.getValue() + "");
         showMatrix();
     }//GEN-LAST:event_thresholdSliderStateChanged
 
     private void minTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_minTextFieldKeyReleased
-        this.initMatrix();
-        this.initThresholdSlider();
-        this.showMatrix();
+        if(evt.isActionKey()) return;
+        
+        String min = minTextField.getText();
+        if(min.matches("\\d+")){
+            String max = maxTextField.getText();
+            if(max.matches("\\d+")){
+                if(Integer.parseInt(min) <= Integer.parseInt(max)){
+                    minTextField.setForeground(Color.black);
+                    maxTextField.setForeground(Color.black);
+                    this.initMatrix();
+                    this.initThresholdSlider();
+                    this.showMatrix();
+                } else {
+                    minTextField.setForeground(Color.red);
+                }
+            }
+            
+        } else {
+            minTextField.setForeground(Color.red);
+        }
     }//GEN-LAST:event_minTextFieldKeyReleased
+
+    private void maxTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_maxTextFieldKeyReleased
+        if(evt.isActionKey()) return;
+        
+        String max = maxTextField.getText();
+        if(max.matches("\\d+")){
+            String min = minTextField.getText();
+            if(min.matches("\\d+")){
+                if(Integer.parseInt(min) <= Integer.parseInt(max)){
+                    minTextField.setForeground(Color.black);
+                    maxTextField.setForeground(Color.black);
+                    this.initMatrix();
+                    this.initThresholdSlider();
+                    this.showMatrix();
+                } else {
+                    maxTextField.setForeground(Color.red);
+                }
+            }
+            
+        } else {
+            maxTextField.setForeground(Color.red);
+        }
+    }//GEN-LAST:event_maxTextFieldKeyReleased
 
     /**
      * @param args the command line arguments
@@ -172,12 +248,8 @@ public class FilterMatrixFrame extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
+            javax.swing.UIManager.setLookAndFeel(
+                    javax.swing.UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(FilterMatrixFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
@@ -199,14 +271,18 @@ public class FilterMatrixFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel confPanel;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel jonayLabel;
     private javax.swing.JPanel matrixPanel;
     private javax.swing.JTextArea matrixTextArea;
     private javax.swing.JLabel maxLabel;
     private javax.swing.JTextField maxTextField;
     private javax.swing.JLabel minLabel;
     private javax.swing.JTextField minTextField;
+    private javax.swing.JLabel samuelLabel;
     private javax.swing.JSlider thresholdSlider;
+    private javax.swing.JTextField thresholdTextField;
     // End of variables declaration//GEN-END:variables
 
     private void initMatrix() {
@@ -240,6 +316,7 @@ public class FilterMatrixFrame extends javax.swing.JFrame {
         this.thresholdSlider.setMajorTickSpacing(majorTickSpacing);
         this.thresholdSlider.setMinorTickSpacing(minorTickSpacing);
         this.thresholdSlider.setPaintTicks(true);
+        this.thresholdSlider.setLabelTable(this.thresholdSlider.createStandardLabels(majorTickSpacing));
         this.thresholdSlider.setPaintLabels(true);      
     }
 
